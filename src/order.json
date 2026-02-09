@@ -1,0 +1,13 @@
+{
+  "assetsPrefix": "landing-pages/<your-project>",
+  "blocks": [
+    "welcome",
+    "sticky-nav",
+    "text",
+    "tabs",
+    "second-text",
+    "conditions",
+    "hotels",
+    "contacts"
+  ]
+}

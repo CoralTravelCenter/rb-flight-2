@@ -1,0 +1,18 @@
+#__next > div > div > div:nth-of-type(n+6) {
+    padding: 0;
+}
+
+section.coral {
+    padding-block: 40px;
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    section.coral {
+        padding-inline: 16px;
+    }
+}
+
+h1 {
+    color: #fff;
+}

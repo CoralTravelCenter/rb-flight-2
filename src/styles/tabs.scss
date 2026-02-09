@@ -1,0 +1,314 @@
+@use "sass:map";
+@import url("https://use.typekit.net/bwb5awp.css");
+
+@mixin flex-cards($gap: 30px, $elements: 3) {
+  --gap: #{$gap};
+  --elements: #{$elements};
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap);
+
+  > * {
+    width: calc((100% - (var(--elements) - 1) * var(--gap)) / var(--elements));
+  }
+}
+
+/* 1) базовый миксин фона */
+@mixin bg($url, $size: contain, $pos: center, $repeat: no-repeat) {
+  background-image: url(#{$url});
+  background-repeat: $repeat;
+  background-position: $pos;
+  background-size: $size;
+}
+
+/* 2) миксин “персона” */
+@mixin coral-persona($name, $cfg) {
+  $hero: map.get($cfg, hero);
+  $letters: map.get($cfg, letters);
+
+  .coral--#{$name} {
+    // фон персонажа: на .coral-hero
+    @if $hero != null {
+      .coral-hero {
+        @include bg($hero, 80%, center bottom);
+      }
+    }
+
+    // фоны букв
+    @if $letters != null {
+      @each $key, $img in $letters {
+        .coral-letter__glyph--#{$key} {
+          @include bg($img, contain, center);
+        }
+      }
+    }
+  }
+}
+
+/* 3) конфиг */
+$coral-personas: (
+        familyon: (
+                hero: "http://localhost:3001/familyon/hero.png",
+                letters: (
+                        k: "http://localhost:3001/familyon/k.png",
+                        n: "http://localhost:3001/familyon/n.png",
+                        o: "http://localhost:3001/familyon/o.png",
+                        u: "http://localhost:3001/familyon/y.png",
+                ),
+        ),
+
+        calculius: (
+                hero: "http://localhost:3001/calculius/hero.png",
+                letters: (
+                        k: "http://localhost:3001/calculius/k.png",
+                        n: "http://localhost:3001/calculius/n.png",
+                        o: "http://localhost:3001/calculius/o.png",
+                        u: "http://localhost:3001/calculius/u.png",
+                ),
+        ),
+
+        taktion: (
+                hero: "http://localhost:3001/taktion/hero.png",
+                letters: (
+                        k: "http://localhost:3001/taktion/k.png",
+                        n: "http://localhost:3001/taktion/n.png",
+                        o: "http://localhost:3001/taktion/o.png",
+                        u: "http://localhost:3001/taktion/u.png",
+                ),
+        ),
+
+        emriyanna: (
+                hero: "http://localhost:3001/emriyanna/hero.png",
+                letters: (
+                        k: "http://localhost:3001/emriyanna/k.png",
+                        n: "http://localhost:3001/emriyanna/n.png",
+                        o: "http://localhost:3001/emriyanna/o.png",
+                        u: "http://localhost:3001/emriyanna/u.png",
+                ),
+        ),
+);
+
+/* 4) генерация CSS для всех персон */
+@each $name, $cfg in $coral-personas {
+  @include coral-persona($name, $cfg);
+}
+
+@mixin scroll-container {
+    scrollbar-width: none;
+    overflow-x: scroll;
+    width: 100vw;
+    scroll-snap-type: x mandatory;
+
+    > * {
+      scroll-snap-align: start;
+    }
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
+}
+
+
+.peredot {
+  color: #58B901;
+  font-family: "peridot-pe-variable", sans-serif;
+  font-size: 40px;
+  font-style: normal;
+  margin:0;
+  font-weight: 900;
+}
+
+.avatar-tabs {
+  /* navigation = tabs */
+  &__navigation {
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+
+    padding: 12px;
+    border-radius: 48px;
+    background: #fff;
+
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 12px;
+
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  &__item {
+    flex-shrink: 0;
+    padding: 12px 24px;
+    border-radius: 24px;
+    cursor: pointer;
+    text-align: center;
+    scroll-snap-align: start;
+    user-select: none;
+    white-space: nowrap;
+    transition: color 300ms ease;
+    color: #000;
+    text-decoration: none;
+
+    &:hover:not(.active) {
+      color: var(--ant-color-primary-hover)
+    }
+
+    @media (min-width: 768px) {
+      flex: 1;
+    }
+  }
+
+  /* JS ставит .active на .tab */
+  &__item.tab.active {
+    background: #d2e9fb;
+  }
+
+  /* panes */
+  &__panes {
+    margin-top: 24px;
+  }
+
+  /* JS: .tab-pane + .active */
+  &__pane.tab-pane {
+    display: none;
+  }
+
+  &__pane.tab-pane.active {
+    display: block;
+  }
+}
+
+/* =========================
+   Coral layout/content
+   ========================= */
+
+.coral {
+  /* двухколоночная сетка: hero + letters */
+  &__layout {
+    @include flex-cards(24px, 1);
+
+    @media (min-width: 1280px) {
+      @include flex-cards(24px, 2);
+    }
+  }
+
+  &__letters {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    @media (max-width: 1279px) {
+      width: 100%;
+    }
+
+    @media (min-width: 768px) and (max-width: 1023px) {
+      @include scroll-container;
+    }
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+    }
+
+    @media (min-width: 1024px) {
+      @include flex-cards(24px, 2);
+    }
+  }
+}
+
+/* =========================
+   Hero card
+   ========================= */
+
+.coral-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  min-height: 400px;
+  padding: 16px;
+  border-radius: 12px;
+
+  background: #fff; /* базовый фон, картинки навешиваем модификаторами */
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center bottom;
+
+  &__title {
+    color:#58B901;
+  }
+
+  &__text {
+    margin: 0;
+  }
+
+  &__hint {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+
+    display: none;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 12px;
+    line-height: 1;
+
+    padding: 4px 16px 4px 20px;
+    border-radius: 100px;
+
+    color: #fff;
+    background: rgba(0, 0, 0, 0.40);
+    backdrop-filter: blur(8px);
+
+    @media (min-width: 1280px) {
+      display: flex;
+    }
+
+    svg {
+      flex: 0 0 auto;
+      display: block;
+    }
+  }
+}
+
+/* =========================
+   Letters
+   ========================= */
+
+.coral-letter {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  padding: 16px;
+  border-radius: 20px;
+  background: #fff;
+
+  @media (min-width: 768px) {
+    min-width: 300px;
+  }
+
+  &__glyph {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 12px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 24px;
+    line-height: 1.2;
+  }
+
+  &__text {
+    margin: 0;
+  }
+}
+
