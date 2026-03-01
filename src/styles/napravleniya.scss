@@ -1,0 +1,120 @@
+.napravleniya-tabs {
+  position: relative;
+}
+
+.napravleniya-nav {
+  display: flex;
+  background-color: #ffffff;
+  padding: 8px;
+  border-radius: 40px;
+  margin-bottom: 24px;
+
+  @media (min-width: 1024px) {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 3;
+
+    border-radius: 40px;
+    background: rgba(0, 0, 0, 0.50);
+    backdrop-filter: blur(15px);
+  }
+}
+
+.napravleniya-button {
+  padding: 12px 24px;
+  border-radius: 40px;
+  border: none;
+  flex: 1;
+  background-color: transparent;
+  font-size: 16px;
+  cursor: pointer;
+
+  @media (min-width: 1024px) {
+    color: #ffffff;
+  }
+}
+
+.napravleniya-button.active {
+  background-color: #D2E9FB;
+
+  @media (min-width: 1024px) {
+    background: #ffffff;
+    color: #000000;
+  }
+}
+
+.napravleniya-panel {
+  display: none;
+  flex-direction: column;
+  position: relative;
+  border-radius: 20px;
+  overflow: clip;
+}
+
+.napravleniya-panel.active {
+  display: flex;
+}
+
+.napravleniya-image {
+  position: relative;
+  z-index: 1;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    min-height: 440px;
+    
+    @media (min-width: 1280px) {
+      min-height: 340px;
+    }
+  }
+}
+
+.napravleniya-text{
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 16px);
+  height: fit-content;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 32px;
+
+  color: #ffffff;
+
+  border-radius: var(--radius-border_Radius_Base, 16px);
+  background: rgba(0, 0, 0, 0.50);
+  backdrop-filter: blur(15px);
+
+  @media (min-width: 1024px) {
+    height:  calc(100% - 16px);
+    max-width: 360px;
+    transform: translateX(0) translateY(-50%);
+    left: 8px;
+    top: 50%;
+    justify-content: center;
+  }
+
+  @media (min-width: 1280px) {
+    max-width: 430px;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 28px;
+    text-wrap: balance;
+  }
+
+  p {
+    margin: 0;
+    font-size: 16px;
+    text-wrap: balance;
+  }
+}
